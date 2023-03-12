@@ -5,7 +5,6 @@ datasource db {
 
 generator client {
   provider      = "prisma-client-js"
-  // if on apple silicon
   binaryTargets = ["native", "darwin-arm64"]
   output        = "../node_modules/.prisma/client"
 }
@@ -13,7 +12,7 @@ generator client {
 model Course {
   id        Int       @id @default(autoincrement())
   title     String
-  chatpers  Chapter[]
+  chapters  Chapter[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -31,21 +30,16 @@ model Chapter {
 }
 
 model Lesson {
-  id Int @id @default(autoincrement())
-
+  id          Int      @id @default(autoincrement())
   title       String
   slug        String
   number      Int
   downloadUrl String
   videoId     Int
   text        String
-  // optional string
   sourceUrl   String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // auto generated when add lessons to chapter
-  Chapter   Chapter? @relation(fields: [chapterId], references: [id])
-  chapterId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Chapter     Chapter  @relation(fields: [chapterId], references: [id])
+  chapterId   Int
 }
