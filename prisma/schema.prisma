@@ -9,6 +9,7 @@ generator client {
   output        = "../node_modules/.prisma/client"
 }
 
+// Course model
 model Course {
   id        Int       @id @default(autoincrement())
   title     String
@@ -17,6 +18,7 @@ model Course {
   updatedAt DateTime  @updatedAt
 }
 
+// Chapter model
 model Chapter {
   id        Int      @id @default(autoincrement())
   title     String
@@ -29,17 +31,32 @@ model Chapter {
   courseId  Int
 }
 
+// Lesson model
 model Lesson {
-  id          Int      @id @default(autoincrement())
-  title       String
-  slug        String
-  number      Int
-  downloadUrl String
-  videoId     Int
-  text        String
-  sourceUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Chapter     Chapter  @relation(fields: [chapterId], references: [id])
-  chapterId   Int
+  id             Int              @id @default(autoincrement())
+  title          String
+  slug           String
+  number         Int
+  downloadUrl    String
+  videoId        Int
+  text           String
+  sourceUrl      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Chapter        Chapter          @relation(fields: [chapterId], references: [id])
+  chapterId      Int
+  LessonProgress LessonProgress[]
+}
+
+// Lesson Progress model
+model LessonProgress {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  completed Boolean  @default(false)
+  Lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId  Int
+  userEmail String
+
+  @@unique([lessonId, userEmail])
 }

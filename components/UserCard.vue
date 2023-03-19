@@ -20,6 +20,9 @@
 </template>
 
 <script setup lang="ts">
+import { onServerPrefetch } from 'vue';
+
+
 const user = useSupabaseUser();
 const { auth } = useSupabaseClient();
 
@@ -34,7 +37,7 @@ const logout = async () => {
   // The Nuxt Supabase auth *should* be doing this
   // for us, but it isn't for some reason.
   try {
-    await $fetch('/api/_supabase/session', {
+    await fetch('/api/_supabase/session', {
       method: 'POST',
       body: { event: 'SIGNED_OUT', session: null },
     });
@@ -53,3 +56,7 @@ const profile = computed(
   () => user.value?.user_metadata.avatar_url
 );
 </script>
+
+function useSupabaseUser() {
+  throw new Error('Function not implemented.');
+}
